@@ -1,0 +1,28 @@
+(   ) Escolher 10 datasets para o trabalho
+(   ) Criar estrutura de diretorios 
+(   ) Criar estrutura de scripts (chamadas e responsabilidades)
+
+(   ) Ler datasets e salvar memória
+(   ) prepocessing dados com LabelEncoder
+(   ) Understanding and prepocessing with OneHotEncoder
+
+(   ) 5 parametros diferentes para KNN
+(   ) Rodar os 10 datasets com KNN
+(   ) Obter saidas do KNN
+
+(   ) 5 parametros diferentes para Regresão Logistica
+(   ) Rodar os 10 datasets com Regresão Logistica
+(   ) Obter saidas do Regresão Logistica
+
+(   ) 5 parametros diferentes para Naive Bayes
+(   ) Rodar os 10 datasets com Naive Bayes
+(   ) Obter saidas do Naive Bayes
+
+(   ) 5 parametros diferentes para Arvore de Decisão
+(   ) Rodar os 10 datasets com Arvore de Decisão
+(   ) Obter saidas do Arvore de Decisão
+
+(   ) 5 parametros diferentes para Redes Neurais
+(   ) Rodar os 10 datasets com Redes Neurais
+(   ) Obter saidas do Redes Neurais
+

@@ -1,0 +1,46 @@
+GridSearchCV por mais que faça já o processo de separação de dados de treino e teste
+e gere ao final a acuracia do processo como da melhor condição de parametros não inibe 
+o uso da lib do algoritmo e nem do proceso de teste do dataset. 
+
+Ainda existe assim as lib KFold e StratifiedKFold para separar em vetor de dados de treino e 
+dados de teste. Assim com cada uma das parte dá para executar os algoritmos e usar metrics...
+para tirar acuracia. Neste caso serve para testar varios conjuntos de testes diferentes. 
+
+Logo, professor pediu essa condição para não usar somente GridSearchCV.
+
+fit é o método em todos os algoritmos para executar o treinamento do dataset
+predict é o método em todo os algoritmos para executar a avaliação do teste
+
+
+
+
+
+
+
+Algumas docs que estou lendo
+https://scikit-learn.org/stable/glossary.html#term-cv-splitter
+https://scikit-learn.org/stable/modules/cross_validation.html#cross-validation
+https://scikit-learn.org/stable/data_transforms.html#data-transforms
+https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.StratifiedKFold.html#sklearn.model_selection.StratifiedKFold
+https://scikit-learn.org/stable/modules/grid_search.html#grid-search
+https://scikit-learn.org/stable/auto_examples/model_selection/plot_grid_search_digits.html#sphx-glr-auto-examples-model-selection-plot-grid-search-digits-py
+https://scikit-learn.org/stable/auto_examples/model_selection/plot_nested_cross_validation_iris.html#sphx-glr-auto-examples-model-selection-plot-nested-cross-validation-iris-py
+https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html#sklearn.model_selection.cross_val_score
+https://scikit-learn.org/stable/auto_examples/model_selection/plot_cv_indices.html#sphx-glr-auto-examples-model-selection-plot-cv-indices-py
+https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.KFold.html#sklearn.model_selection.KFold
+https://scikit-learn.org/stable/auto_examples/model_selection/plot_multi_metric_evaluation.html#sphx-glr-auto-examples-model-selection-plot-multi-metric-evaluation-py
+https://scikit-learn.org/stable/modules/generated/sklearn.datasets.make_hastie_10_2.html#sklearn.datasets.make_hastie_10_2
+https://scikit-learn.org/stable/glossary.html#term-random-state
+https://scikit-learn.org/stable/glossary.html#term-scorer
+https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter
+https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV
+https://scikit-learn.org/stable/modules/classes.html#module-sklearn.model_selection
+
+stack overflow
+https://stackoverflow.com/questions/44459845/gridsearchcv-best-score-meaning-when-scoring-set-to-accuracy-and-cv
+
+pandas 
+https://pandas.pydata.org/pandas-docs/stable/getting_started/dsintro.html#dataframe
+
+
+

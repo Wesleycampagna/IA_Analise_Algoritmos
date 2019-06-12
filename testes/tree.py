@@ -62,7 +62,7 @@ if __name__ == "__main__":
 	gs.fit(X, y)
 
 	#Todos valores de funcoes que o fit pode retornar
-	#print(sorted(gs.cv_results_.keys()))
+	print(sorted(gs.cv_results_.keys()))
 
 	# Printando todas as possibilidades de acuracias combinando os parametros
 	print(gs.cv_results_['mean_test_score'])
