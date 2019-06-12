@@ -4,3 +4,7 @@
 #               Alberto Benites             - 2016.1906.026-4
 #               Gabriel Chiba Miyahira      - 2017.1904.005-2
 # ------------------------------------------------------------------------------------------
+
+def label_encoder(dataset):
+    return dataset
+
