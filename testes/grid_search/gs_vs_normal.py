@@ -12,7 +12,7 @@ import pandas as pd
 
 """ A ideia aqui é de criar dois testes, busca de accuracy pelo método normal de 
 DecisionTreeClassifier sem CV apenas com o parametro de random_state e a accuracia 
-trazida pelo GridSearchCV com foco em accuracia (linha ) """
+trazida pelo GridSearchCV com foco em accuracia (linha 38) """
 
 # gera um conjunto de teste randomico
 X, y = make_hastie_10_2(n_samples=42, random_state=10)

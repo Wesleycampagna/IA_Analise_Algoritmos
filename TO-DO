@@ -6,23 +6,27 @@
 (   ) prepocessing dados com LabelEncoder
 (   ) Understanding and prepocessing with OneHotEncoder
 
-(   ) 5 parametros diferentes para KNN
+(   ) minimo 5 parametros diferentes para KNN
 (   ) Rodar os 10 datasets com KNN
-(   ) Obter saidas do KNN
+(   ) Obter saidas do KNN (desempenho com cada combinação de parametro)
+(   ) Para cada dataset calcular méida e desvio padrão obtidos nas medidas de avaliação por fold
 
-(   ) 5 parametros diferentes para Regresão Logistica
+(   ) minimo 5 parametros diferentes para Regresão Logistica
 (   ) Rodar os 10 datasets com Regresão Logistica
-(   ) Obter saidas do Regresão Logistica
+(   ) Obter saidas do Regresão Logistica (desempenho com cada combinação de parametro)
+(   ) Para cada dataset calcular méida e desvio padrão obtidos nas medidas de avaliação por fold
 
-(   ) 5 parametros diferentes para Naive Bayes
+(   ) minimo 5 parametros diferentes para Naive Bayes
 (   ) Rodar os 10 datasets com Naive Bayes
-(   ) Obter saidas do Naive Bayes
+(   ) Obter saidas do Naive Bayes (desempenho com cada combinação de parametro)
+(   ) Para cada dataset calcular méida e desvio padrão obtidos nas medidas de avaliação por fold
 
-(   ) 5 parametros diferentes para Arvore de Decisão
+(   ) minimo 5 parametros diferentes para Arvore de Decisão
 (   ) Rodar os 10 datasets com Arvore de Decisão
-(   ) Obter saidas do Arvore de Decisão
+(   ) Obter saidas do Arvore de Decisão (desempenho com cada combinação de parametro)
+(   ) Para cada dataset calcular méida e desvio padrão obtidos nas medidas de avaliação por fold
 
-(   ) 5 parametros diferentes para Redes Neurais
+(   ) minimo 5 parametros diferentes para Redes Neurais
 (   ) Rodar os 10 datasets com Redes Neurais
-(   ) Obter saidas do Redes Neurais
-
+(   ) Obter saidas do Redes Neurais (desempenho com cada combinação de parametro)
+(   ) Para cada dataset calcular méida e desvio padrão obtidos nas medidas de avaliação por fold
