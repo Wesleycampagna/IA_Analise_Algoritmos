@@ -7,7 +7,7 @@ names = ['SepalLength', 'SepalWidth',
          'PetalLength', 'PetalWidth',
          'Class']
 
-dados = pd.read_csv('iris.data', names=names)
+dados = pd.read_csv('../../datasets/iris.data', names=names)
 
 print("Linhas: %d, Colunas: %d" % (len(dados), len(dados.columns)))
 

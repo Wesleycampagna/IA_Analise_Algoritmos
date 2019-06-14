@@ -6,7 +6,7 @@ names = ['SepalLength', 'SepalWidth',
          'PetalLength', 'PetalWidth',
          'Class']
 
-df = pd.read_csv('iris.data', names=names)
+df = pd.read_csv('../../datasets/iris.data', names=names)
 
 print("Linhas: %d, Colunas: %d" % (len(df), len(df.columns)))
 
@@ -46,7 +46,9 @@ print(classifier_dt.predict([sample1, sample2, sample3]))  # Predizendo o tipo d
 from sklearn.model_selection import cross_val_score
 
 scores_dt = cross_val_score(classifier_dt, X, y, scoring='accuracy', cv=5)
-print(scores_dt.mean())
+print('score_mean: ', scores_dt.mean())
+
+print('scores: ', scores_dt)
 
 #Random Forest
 from sklearn.ensemble import RandomForestClassifier
@@ -55,7 +57,7 @@ classifier_rf = RandomForestClassifier(random_state=1986, n_estimators=50, max_d
 classifier_rf.fit(X, y)
 
 scores_rf = cross_val_score(classifier_rf, X, y, scoring='accuracy', cv=5)
-print(scores_rf.mean())
+print('score_mean2: ', scores_rf.mean())
 
 #Feature Importance
 classifier_rf.fit(X, y)  # Treinando com tudo
@@ -75,10 +77,15 @@ param_grid = {
             "max_features": ['auto', 0.1, 0.2, 0.3]
 }
 grid_search = GridSearchCV(classifier_rf, param_grid, scoring="accuracy")
-grid_search.fit(X, y)
+#grid_search.fit(X, y)
+
+print('---------------------------')
 
 # Pegando o melhor classificador
-classifier_rf = grid_search.best_estimator_
+all_params = grid_search.best_estimator_
 
+print(all_params)
+print('--------------------')
 print(grid_search.best_score_)
+print('--------------------')
 print(grid_search.best_params_)

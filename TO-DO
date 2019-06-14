@@ -1,8 +1,8 @@
-(   ) Escolher 10 datasets para o trabalho (3/10)
+(   ) Escolher 10 datasets para o trabalho (15/10)
 ( x ) Criar estrutura de diretorios 
 (   ) Criar estrutura de scripts (chamadas e responsabilidades)
 
-(   ) Ler datasets e salvar memória
+( x ) Ler datasets e salvar memória
 (   ) prepocessing dados com LabelEncoder
 (   ) Understanding and prepocessing with OneHotEncoder
 

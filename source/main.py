@@ -18,10 +18,23 @@ class Main:
         # carrega os datasets para uso
         lds = load_dataset.load_dataset(Main.datasets)
 
-        # por hora teste de instancias
-        lds.prepocess_dataset()        
-        print(len(lds.get_datasets()))
-        print(len(lds.get_datasets(1)))
+        # pre processamento 
+        lds.prepocess_dataset()  
 
+        # normalização dos dados
+        #lds.normalize()      
+
+        # obtem todos os arquivos
+        self.datas = lds.get_datasets()
+
+
+    def get_best_params_grid_search(classificador, grid_params):
+        pass
+
+
+    if __name__ == "__main__":
+        # codigo dos algs
+        # stratifiedKFold
+        print('começa aqui')
 
 Main()

@@ -1,4 +1,3 @@
-import numpy as np
 from matplotlib import pyplot as plt
 
 from sklearn.datasets import make_hastie_10_2
@@ -16,6 +15,8 @@ trazida pelo GridSearchCV com foco em accuracia (linha 38) """
 
 # gera um conjunto de teste randomico
 X, y = make_hastie_10_2(n_samples=42, random_state=10)
+
+pd.DataFrame(X)
 
 # separa os dados pra teste e treino
 X_train, X_test, y_train, y_test = train_test_split(X, y)

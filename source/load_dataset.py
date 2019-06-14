@@ -15,17 +15,17 @@ class load_dataset:
         for entry in array_paths:
             try:
                 self.datasets.append(pd.read_csv('../datasets/{}'.format(entry), sep=",", header=None))
-                print('1. SUCCESS load dataset {}'.format(entry))
+                print('SUCCESS \tload dataset {}'.format(entry))
             except:
                 try:
                     self.datasets.append(pd.read_excel('../datasets/{}'.format(entry), index_col=None, na_values=['NA']))
-                    print('2. SUCCESS load dataset {}'.format(entry))
+                    print('SUCCESS \tload dataset {}'.format(entry))
                 except:
                     try:
                         self.datasets.append(pd.read_html('../datasets/{}'.format(entry), index_col=None, na_values=['NA']))
-                        print('3. SUCCESS load dataset {}'.format(entry))  
+                        print('SUCCESS \tload dataset {}'.format(entry))  
                     except:
-                        print('4. FAIL \tload dataset {}'.format(entry))
+                        print('FAIL \t\tload dataset {}'.format(entry))
     
 
     def prepocess_dataset(self):
