@@ -30,11 +30,13 @@ class load_dataset:
 
     def prepocess_dataset(self):
         for i in range(len(self.datasets)):
-            self.datasets[i] = pre_pcs.label_encoder(self.datasets[i])
+            self.datasets[i], collumns = pre_pcs.label_encoder(self.datasets[i])
+            self.datasets[i] = self.prepocess_one_dataset(self.datasets[i], collumns)
 
 
-    def prepocess_one_dataset(self, i):        
-        self.datasets[i-1] = pre_pcs.label_encoder(self.datasets[i-1])
+    def prepocess_one_dataset(self, dataset, collumns):
+        dataset = pre_pcs.one_hot_encoder(dataset, collumns)
+        return dataset
 
 
     def get_datasets(self, i=None):
