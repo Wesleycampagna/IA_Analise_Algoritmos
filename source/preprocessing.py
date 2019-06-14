@@ -7,26 +7,33 @@
 
 from sklearn import preprocessing
 import numpy as np
+import pandas as pd
 
 
 def label_encoder(dataset):
     
-        
-    #dataset = [["vhigh","vhigh",2,"big","low","unacc"],
-                #["vlow","vlow",2,"small","med","unacs"],
-                #["vmedium","vmed",2,"medii","haigh","unacscc"]]
+    #names = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']
+    #dataset = pd.read_csv("../testes/nbayesgabriel/breast-cancer.data", sep=",", header=None, names=names)    
+#    dataset = [['vhigh','vhigh',2,'big','low','unacc'],
+#                ['vlow','vlow',2,'small','med','unacs'],
+#                ['vmedium','vmed',2,'medii','haigh','unacscc']]
     
     #print(dataset)
     
     #print("--------------------------")
     
-    #dataset = np.array(dataset)
+#    print(dataset)
+#    print("--------------------------")
+    
+    dataset = np.array(dataset)
+
     
     #print(dataset)
     #print("--------------------------")
     
-    dataset = [*zip(*dataset)]
-    #print(dataset)
+    #dataset = [*zip(*dataset)]
+    dataset = dataset.T
+    #print(dataset[6])
     #print("--------------------------")
     
     
@@ -57,13 +64,15 @@ def label_encoder(dataset):
     #print("-----------------------")
         
 
-    dataset = [*zip(*dataset)]
+    #dataset = [*zip(*dataset)]
+    dataset = dataset.T
     
-    dataset = [list(row) for row in dataset]
+    #dataset = [list(row) for row in dataset]
+    dataset = dataset
         
-    #print(dataset)
-    #print("-----------------------")
-    #print(collumns)
+#    print(dataset)
+#    print("-----------------------")
+#    print(collumns)
                     
         
             
@@ -76,4 +85,4 @@ def one_hot_encoder(dataset, collumns):
     return dataset
 
 
-#label_encoder()
+##label_encoder()
