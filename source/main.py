@@ -46,7 +46,7 @@ class Main:
 
         print('\ntudo pronto!')
         #print(self.datas_y)
-        self.cross_validation = StratifiedKFold(n_splits=4, shuffle=True, random_state=False)
+        self.cross_validation = StratifiedKFold(n_splits=10, shuffle=True, random_state=False)
 
 
     def get_all_x(self):
@@ -99,7 +99,7 @@ for i_dsets in range(len(all_x)):
             knn = [ KNeighborsClassifier(n_neighbors=5, weights='distance', algorithm='auto', 
                 leaf_size=30, p=2, metric='euclidean', metric_params=None),
 
-            KNeighborsClassifier(n_neighbors=9, weights='distance', algorithm='auto', 
+            KNeighborsClassifier(n_neighbors=9, weights='uniform', algorithm='auto', 
                 leaf_size=30, p=2, metric='euclidean', metric_params=None),
 
             KNeighborsClassifier(n_neighbors=7, weights='uniform', algorithm='auto', 
@@ -107,6 +107,7 @@ for i_dsets in range(len(all_x)):
             
             #trab.get_best_params_grid_search()
             
+            # all_x[i_dsets]
             for i in knn:
                 pass
 
