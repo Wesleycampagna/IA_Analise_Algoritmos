@@ -135,23 +135,50 @@ for i_dsets in range(len(all_x)):
         # rodar arvore de decisão 5x
         if algorithm is DECISION_THEE:
             
-            for i in range(5):
 
-                tree = DecisionTreeClassifier(criterion='gini', splitter='best', max_depth=None, 
+                tree = [ DecisionTreeClassifier(criterion='entropy', splitter='random', max_depth=None, 
                 min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
                 max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
-                min_impurity_split=None, class_weight=None, presort=False)            
+                min_impurity_split=None, class_weight=None, presort=False),
+
+                DecisionTreeClassifier(criterion='gini', splitter='best', max_depth=10, 
+                min_samples_split=5, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
+                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
+                min_impurity_split=None, class_weight=None, presort=False),
+
+                DecisionTreeClassifier(criterion='gini', splitter='random', max_depth=7, 
+                min_samples_split=3, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
+                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
+                min_impurity_split=None, class_weight=None, presort=True),
+
+                DecisionTreeClassifier(criterion='entropy', splitter='best', max_depth=None, 
+                min_samples_split=4, min_samples_leaf=2, min_weight_fraction_leaf=0.0, 
+                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.1, 
+                min_impurity_split=None, class_weight=None, presort=False) ]
+
                 
-                #TODO completar
 
                 param_grid = {'criterion':('gini', 'entropy'), 
                 'splitter':('best', 'random'),
-                'min_samples_split': np.arange(2, 10),
-                'max_depth': np.arange(1,10),
+                'min_samples_split': (2, 3, 5, 7, 10),
+                'max_depth': (1, 2, 3, 5, 7, 10),
                 'presort':('auto', True, False)}
 
-                #print(all_y[i_dsets])
-                #print(trab.get_best_params_grid_search(tree, param_grid, all_x[i_dsets], all_y[i_dsets]))
+                best_params = trab.get_best_params_grid_search(DecisionTreeClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+
+                dtc_by_gs = DecisionTreeClassifier(criterion=best_params[0]['criterion'], splitter=best_params[0]['splitter'], 
+                min_samples_split=best_params[0]['min_samples_split'], max_depth=best_params[0]['max_depth'], presort=best_params[0]['presort'])
+
+                tree.append(dtc_by_gs)
+
+                for trees in tree:
+                    placar = cross_val_score(trees, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
+                    media = placar.mean()
+                    variancia = np.std(placar)
+                    print(" media eh ", media , " " , "variancia eh ",  variancia)
+
+                    
+                print('-------------------------------------------------------')
 
 
         # rodar naive_bayes 5x
