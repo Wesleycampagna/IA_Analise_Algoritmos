@@ -9,9 +9,11 @@ import load_dataset
 
 class Main:
 
-    datasets =  ['heart.dat',
-                'Z_Alizadeh_sani_dataset.xlsx',
-                'SomervilleHappinessSurvey2015.txt']
+    # obrigatorio descrever os names e um ao menos com class
+    datasets =  [['heart.dat', ['aa', 'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka', 'la', 'ma', 'class']],
+                #['Z_Alizadeh_sani_dataset.xlsx', 0], ver a classe dele e fazer os nomes
+                ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e']],
+                ['../testes/nbayesgabriel/breast-cancer.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']]]
     
     def __init__(self):
 
@@ -25,16 +27,14 @@ class Main:
         #lds.normalize()      
 
         # obtem todos os arquivos
-        self.datas = lds.get_datasets()
+        self.datas_x = lds.get_datasets_x()
+        self.datas_y = lds.get_datasets_y()
 
-
+        #print(self.datas_y)
+        
     def get_best_params_grid_search(classificador, grid_params):
         pass
 
-
-    if __name__ == "__main__":
-        # codigo dos algs
-        # stratifiedKFold
-        print('começa aqui')
-
 Main()
+
+#TODO: Escreve aqui 
