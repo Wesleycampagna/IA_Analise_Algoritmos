@@ -1,10 +1,10 @@
-(   ) Escolher 10 datasets para o trabalho (15/10)
+( x ) Escolher 10 datasets para o trabalho (15/10)
 ( x ) Criar estrutura de diretorios 
-(   ) Criar estrutura de scripts (chamadas e responsabilidades)
+( x ) Criar estrutura de scripts (chamadas e responsabilidades)
 
 ( x ) Ler datasets e salvar memória
-(   ) prepocessing dados com LabelEncoder
-(   ) Understanding and prepocessing with OneHotEncoder
+( x ) prepocessing dados com LabelEncoder
+( x ) Understanding and prepocessing with OneHotEncoder
 
 (   ) minimo 5 parametros diferentes para KNN
 (   ) Rodar os 10 datasets com KNN
