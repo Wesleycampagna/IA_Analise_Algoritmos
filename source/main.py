@@ -1,5 +1,5 @@
 import load_dataset
-
+import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
@@ -22,8 +22,7 @@ class Main:
     # obrigatorio descrever os names e um ao menos com class
     datasets =  [['heart.dat', ['aa', 'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka', 'la', 'ma', 'class']],
                 #['Z_Alizadeh_sani_dataset.xlsx', 0], ver a classe dele e fazer os nomes
-                ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e']],
-                ['../testes/nbayesgabriel/breast-cancer.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']]]
+                ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e']]]
     
     def __init__(self):
 
@@ -58,7 +57,7 @@ class Main:
 
 
     def get_best_params_grid_search(self, estimator, param_grid, x, y):
-        grid_search = GridSearchCV(estimator, param_grid, scoring='accuraccy', refit=True, cv=self.cross_validation)
+        grid_search = GridSearchCV(estimator, param_grid, scoring='accuracy', refit=True, cv=self.cross_validation)
         grid_search.fit(x, y)
         return grid_search.best_estimator_, grid_search.best_score_, grid_search.best_params_, grid_search.best_index_
 
@@ -84,6 +83,7 @@ trab = Main()
 
 all_x = trab.get_all_x()
 all_y = trab.get_all_y()
+
 
 #TODO: Escreve aqui qualquer coia a mais necessaria  - deixei todos os parametros das libs
 
@@ -123,7 +123,16 @@ for i_dsets in range(len(all_x)):
                 min_impurity_split=None, class_weight=None, presort=False)            
                 
                 #TODO completar
-            pass
+
+                param_grid = {'criterion':('gini', 'entropy'), 
+                'splitter':('best', 'random'),
+                'min_samples_split': np.arange(2, 10),
+                'max_depth': np.arange(1,10),
+                'presort':('auto', True, False)}
+
+                #print(all_y[i_dsets])
+                print(trab.get_best_params_grid_search(tree, param_grid, all_x[i_dsets], all_y[i_dsets]))
+
 
         # rodar naive_bayes 5x
         if algorithm is NAIVE_BAYES:
