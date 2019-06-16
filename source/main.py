@@ -99,10 +99,8 @@ all_y = trab.get_all_y()
 
 
 # para cada dataset deve-se rodar ao menos 5 combinações de cada algoritmo
-for i_dsets in range(10, len(all_x)):
-#for i_dsets in range(3, 4):
-    print('i: ', i_dsets)
-
+for i_dsets in range(len(all_x)):
+   
     # run todos algortmos
     for algorithm in range(NUM_ALGRITHM):
 
