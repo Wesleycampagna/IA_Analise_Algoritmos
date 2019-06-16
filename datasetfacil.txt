@@ -1,0 +1,10 @@
+datasets =  [['heart.dat', ['aa', 'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka', 'la', 'ma', 'class']],
+                ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e', 'f']],
+                ['breast-cancer.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']],
+                ['iris.data', ['a', 'b', 'c', 'd', 'class']],
+                ['transfusion.data', ['a', 'b', 'c', 'd', 'class']],
+                ['balance-scale.data', ['class', 'a', 'b', 'c', 'd']],
+                ['breast-cancer-wisconsin.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'class']],
+                ['hayes-roth.data', ['a', 'b', 'c', 'd', 'e', 'class']],
+                ['mammographic_masses.data', ['a', 'b', 'c', 'd', 'e', 'class']],
+                ['Wholesale customers data.csv', []]]
