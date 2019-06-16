@@ -1,5 +1,7 @@
 import load_dataset
 import numpy as np
+import time
+
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
@@ -85,6 +87,8 @@ class Main:
         return Main.datasets
     
 #-----------------------------------------------------------------------------
+
+
 NUM_ALGRITHM = 6
 KNN = 1
 DECISION_THEE = 2
@@ -93,6 +97,39 @@ LOGISTIC_REGRESSION = 4
 NEURAL_NETWORK = 5
 
 trab = Main()
+
+
+all_means = []
+all_vars = []
+all_times = []
+
+def plot_mean_var():
+    pass
+
+
+def get_answers(estimador, x_data, y_data):
+
+    means = []
+    variancias = []
+    time_to_make_cross_val = []
+
+    for x_fold in estimador:
+        inicio = time.time()
+        placar = cross_val_score(x_fold, X=x_data, y=y_data, cv=trab.get_fold_params())
+        fim = time.time()
+        media = placar.mean()
+        variancia = np.std(placar)
+
+        means.append(media)
+        variancias.append(variancia)
+        time_to_make_cross_val.append(fim - inicio)
+
+        print("tree media eh ", media , " " , "variancia eh ",  variancia)
+    
+    all_means.append(means)
+    all_vars.append(variancias)
+    all_times.append(time_to_make_cross_val)
+
 
 all_x = trab.get_all_x()
 all_y = trab.get_all_y()
@@ -133,12 +170,7 @@ for i_dsets in range(len(all_x)):
 
             knn.append(knn_by_gs)
 
-            for kney in knn:
-                placar = cross_val_score(kney, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                media = placar.mean()
-                variancia = np.std(placar)
-                # jogar isto depois em algo
-                print("knn media eh ", media , " " , "variancia eh ",  variancia)
+            get_answers(knn, all_x[i_dsets], all_y[i_dsets])
             
             print('-------------------------------------------------------')
 
@@ -180,11 +212,7 @@ for i_dsets in range(len(all_x)):
 
             tree.append(dtc_by_gs)
 
-            for trees in tree:
-                placar = cross_val_score(trees, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                media = placar.mean()
-                variancia = np.std(placar)
-                print("tree media eh ", media , " " , "variancia eh ",  variancia)
+            get_answers(tree, all_x[i_dsets], all_y[i_dsets])
 
             print('-------------------------------------------------------')
 
@@ -206,11 +234,7 @@ for i_dsets in range(len(all_x)):
 
             gnb.append(gnb_by_gs)
 
-            for gnbs in gnb:
-                placar = cross_val_score(gnbs, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                media = placar.mean()
-                variancia = np.std(placar)
-                print(" GNB media eh ", media , " " , "variancia do GNB eh ",  variancia)
+            get_answers(gnb, all_x[i_dsets], all_y[i_dsets])
 
             print('-------------------------------------------------------')
 
@@ -243,12 +267,7 @@ for i_dsets in range(len(all_x)):
 
             log_regression.append(lr_bt_gs)
 
-            for lreg in log_regression:
-                placar = cross_val_score(lreg, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                media = placar.mean()
-                variancia = np.std(placar)
-                # jogar isto depois em algo
-                print(" media eh ", media , " " , "variancia eh ",  variancia)
+            get_answers(log_regression, all_x[i_dsets], all_y[i_dsets])
 
             print('-------------------------------------------------------')
 
@@ -286,12 +305,7 @@ for i_dsets in range(len(all_x)):
 
             #r_neurais_clas.append(nn_by_gs)
 
-            for r_meurais in r_neurais_clas:
-                placar = cross_val_score(r_meurais, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                media = placar.mean()
-                variancia = np.std(placar)
-                # jogar isto depois em algo
-                print(" media eh ", media , " " , "variancia eh ",  variancia)
+            get_answers(r_neurais_clas, all_x[i_dsets], all_y[i_dsets])
 
             print('-------------------------------------------------------')
 
