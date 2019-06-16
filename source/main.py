@@ -85,7 +85,7 @@ class Main:
         return Main.datasets
     
 #-----------------------------------------------------------------------------
-NUM_ALGRITHM = 5
+NUM_ALGRITHM = 6
 KNN = 1
 DECISION_THEE = 2
 NAIVE_BAYES = 3
@@ -99,7 +99,9 @@ all_y = trab.get_all_y()
 
 
 # para cada dataset deve-se rodar ao menos 5 combinações de cada algoritmo
-for i_dsets in range(len(all_x)):
+for i_dsets in range(10, len(all_x)):
+#for i_dsets in range(3, 4):
+    print('i: ', i_dsets)
 
     # run todos algortmos
     for algorithm in range(NUM_ALGRITHM):
@@ -215,41 +217,91 @@ for i_dsets in range(len(all_x)):
             print('-------------------------------------------------------')
 
 
-        # rodar regressão logistica 5x
-        if algorithm is LOGISTIC_REGRESSION:
+        # rodar regressão logistica 5x   --  obs: não converge no dataset 7 e 11 dá diversos warning de convergencia também (porem executa ao fim) 
+        if algorithm is LOGISTIC_REGRESSION and i_dsets is not 6 and i_dsets is not 10:
 
             print('[LREGRESSION] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
-            log_regression = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True, intercept_scaling=1, 
-            class_weight=None, random_state=None, solver='warn', max_iter=100, multi_class='warn', verbose=0, warm_start=False, n_jobs=None)
-            #TODO completar
+            log_regression = [LogisticRegression(penalty='l2', tol=0.0001, class_weight='balanced', solver='lbfgs', max_iter=23000, multi_class='ovr',
+            warm_start=False, n_jobs=-1),
+
+            LogisticRegression(penalty='l2', tol=0.001, class_weight='balanced', solver='newton-cg', max_iter=22000, multi_class='ovr',
+            warm_start=True, n_jobs=-1),
+
+            LogisticRegression(penalty='l2', tol=0.001, class_weight='balanced', solver='lbfgs', max_iter=31500, multi_class='ovr',
+            warm_start=False, n_jobs=-1),
+
+            LogisticRegression(penalty='l2', tol=0.0001, class_weight='balanced', solver='sag', max_iter=17000, multi_class='ovr',
+            warm_start=True, n_jobs=-1)]
+
+            param_grid = {'class_weight': ('balanced', None), 'solver':('newton-cg', 'lbfgs'), 
+            'max_iter':(45000, 53000), 'warm_start':(False, True), 'multi_class':('ovr', 'auto'), 'n_jobs': (-1, 1)}
+
+            best_params = trab.get_best_params_grid_search(LogisticRegression(), param_grid, all_x[i_dsets], all_y[i_dsets])
+
+            # consegui rodar com os parametros do gridSearch uhuuuu!!
+            lr_bt_gs = LogisticRegression(class_weight=best_params[0]['class_weight'], solver=best_params[0]['solver'], max_iter=best_params[0]['max_iter'], 
+            warm_start=best_params[0]['warm_start'], tol=0.01, multi_class=best_params[0]['multi_class'], n_jobs=best_params[0]['n_jobs'])
+
+            log_regression.append(lr_bt_gs)
+
+            for lreg in log_regression:
+                placar = cross_val_score(lreg, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
+                media = placar.mean()
+                variancia = np.std(placar)
+                # jogar isto depois em algo
+                print(" media eh ", media , " " , "variancia eh ",  variancia)
+
+            print('-------------------------------------------------------')
 
         # rodar redes neurais 5x
         if algorithm is NEURAL_NETWORK:
 
             print('[RNEURAIS] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
-            """ r_neurais_clas = MLPClassifier(hidden_layer_sizes=(4), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', 
-            learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, 
-            verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, 
-            beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10)
+            r_neurais_clas = [MLPClassifier(hidden_layer_sizes=(10), activation='relu', solver='adam', alpha=0.0005, 
+            learning_rate_init=0.01, max_iter=12000, tol=0.0001, n_iter_no_change=10),
+            
+            MLPClassifier(hidden_layer_sizes=(3), activation='relu', solver='lbfgs', alpha=0.0001, 
+            learning_rate_init=0.008, max_iter=8000, tol=0.0001, n_iter_no_change=5),
 
-            param_grid = {'hidden_layer_sizes':(2, 3, 4, 5, 6), 'activation':('relu'),
-            'n_neighbors':(3,5, 7, 9, 11),
-            'weights': ('uniform', 'distance')}
+            MLPClassifier(hidden_layer_sizes=(6), activation='relu', solver='sgd', alpha=0.0004, 
+            learning_rate_init=0.005, max_iter=6000, tol=0.0001, n_iter_no_change=15),
 
-            best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            MLPClassifier(hidden_layer_sizes=(50), activation='identity', solver='lbfgs', alpha=0.0008, 
+            learning_rate_init=0.001, max_iter=10000, tol=0.0001, n_iter_no_change=3),
+            
+            MLPClassifier(hidden_layer_sizes=(50), activation='identity', solver='adam', alpha=0.0001, 
+            learning_rate_init=0.01, max_iter=14000, tol=0.001, n_iter_no_change=20)]
+
+            param_grid = {'hidden_layer_sizes':((5,), (10,)), 'activation':('relu', 'identity'), 
+            'alpha':(0.008, 0.0005), 'solver': ('lbfgs', 'sgd'),
+            'learning_rate_init':(0.8, 0.5), 'max_iter':(5000, 8000),
+            'n_iter_no_change':(10, 15)}
+
+            """ comentei aqui por que demora bastante o GridSearch """
+            #best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
 
             # consegui rodar com os parametros do gridSearch uhuuuu!!
-            nn_by_gs = MLPClassifier(a=best_params[0][''])
+            #nn_by_gs = MLPClassifier(hidden_layer_sizes=best_params[0]['hidden_layer_sizes'], activation=best_params[0]['activation'], 
+            #solver=best_params[0]['solver'], alpha=best_params[0]['alpha'], max_iter=best_params[0]['max_iter'], n_iter_no_change=best_params[0]['n_iter_no_change'])
 
-            r_neurais_clas.append(nn_by_gs)
+            #r_neurais_clas.append(nn_by_gs)
 
             for r_meurais in r_neurais_clas:
                 placar = cross_val_score(r_meurais, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
                 media = placar.mean()
                 variancia = np.std(placar)
                 # jogar isto depois em algo
-                print(" media eh ", media , " " , "variancia eh ",  variancia) """
+                print(" media eh ", media , " " , "variancia eh ",  variancia)
 
             print('-------------------------------------------------------')
+
+# datasets que tenha colunas muito constratantes (valores) como breast-cancer-wisconsin.data
+# knn reglog e rneurais sofrem muita queda da acuracia
+# em compensação arvore de decisão apresentou valore  muito bons
+
+# 2 datasets não rodaram na reglog -> breast-cancer-wisconsin.data e Wholesale customers data.csv
+# aparentemente por apresentar valores muito altos. 
+
+# reg_log necessita uma enorme quantidade de iteração
