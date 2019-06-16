@@ -1,6 +1,8 @@
 import load_dataset
 import numpy as np
 import time
+import os
+import matplotlib.pyplot as plt
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
@@ -8,6 +10,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import LogisticRegression
 
+from sklearn.metrics import log_loss, make_scorer
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score
@@ -100,6 +103,13 @@ trab = Main()
 all_means = []
 all_vars = []
 all_times = []
+all_really_means = []
+all_really_vars = []
+all_really_times = []
+
+def create_folder():
+    if not os.path.exists('output-files'):
+        os.makedirs('output-files')
 
 def plot_mean_var():
     pass
@@ -112,17 +122,23 @@ def get_answers(estimador, x_data, y_data):
     time_to_make_cross_val = []
 
     for x_fold in estimador:
+        
         inicio = time.time()
         placar = cross_val_score(x_fold, X=x_data, y=y_data, cv=trab.get_fold_params())
         fim = time.time()
+        
         media = placar.mean()
-        variancia = np.std(placar)
+        variancia = np.std(placar)        
+
+        log_oss = make_scorer(log_loss, needs_proba=True, labels = y_data)
+        loss = cross_val_score(x_fold, X=x_data, y=y_data, cv=trab.get_fold_params(), scoring = log_oss)
+        media_loss = loss.mean()
 
         means.append(media)
         variancias.append(variancia)
         time_to_make_cross_val.append(fim - inicio)
 
-        print("tree media eh ", media , " " , "variancia eh ",  variancia)
+        print("tree media eh ", media , " " , "variancia eh ",  variancia, "log loss eh ", media_loss)
     
     all_means.append(means)
     all_vars.append(variancias)
@@ -307,6 +323,7 @@ for i_dsets in range(len(all_x)):
             get_answers(r_neurais_clas, all_x[i_dsets], all_y[i_dsets])
 
             print('-------------------------------------------------------')
+
 
 # datasets que tenha colunas muito constratantes (valores) como breast-cancer-wisconsin.data
 # knn reglog e rneurais sofrem muita queda da acuracia
