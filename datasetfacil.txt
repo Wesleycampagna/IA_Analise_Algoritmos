@@ -1,10 +1,15 @@
 datasets =  [['heart.dat', ['aa', 'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka', 'la', 'ma', 'class']],
                 ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e', 'f']],
                 ['breast-cancer.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']],
-                ['iris.data', ['a', 'b', 'c', 'd', 'class']],
-                ['transfusion.data', ['a', 'b', 'c', 'd', 'class']],
+                ['iris.data', ['a', 'b', 'c', 'd', 'class']], 
                 ['balance-scale.data', ['class', 'a', 'b', 'c', 'd']],
+                ['car.data', ['a', 'b', 'c', 'd', 'e', 'f', 'class']],
+                ['transfusion.data', ['a', 'b', 'c', 'd', 'class']],
+                ['mammographic_masses.data', ['a', 'b', 'c', 'd', 'class']],
+                ['Wholesale customers data.csv', ['class','Region','Fresh','Milk','Grocery','Frozen','Detergents_Paper','Delicassen']],
+                ['hayes-roth.data', ['a', 'b', 'c', 'd', 'e', 'class']],                
                 ['breast-cancer-wisconsin.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'class']],
-                ['hayes-roth.data', ['a', 'b', 'c', 'd', 'e', 'class']],
-                ['mammographic_masses.data', ['a', 'b', 'c', 'd', 'e', 'class']],
-                ['Wholesale customers data.csv', []]]
+                #['Z_Alizadeh_sani_dataset.xlsx', ['m1', 'm2', 'm3', 'm4', 'm5', 'm6', 'm7', 'm8', 'm9', 'm10', 'm11', 'ml2', 'm13', 'm14', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6', 'n7', 'n8', 'n9', 'n10', 'n11', 'nl2', 'n13', 'n14', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'ol2', 'o13', 'o14', 'p1', 'p2', 'p3', 'p4', 'p5', 'p6', 'p7', 'p8', 'p9', 'p10', 'p11', 'pl2', 'p13', 'p14', 'class']], #ver a classe dele e fazer os nomes
+                #['Concrete_Data.xls', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'class']],
+                #['dataset_Facebook.csv', ['Page total likes', 'class', 'Category', 'Post Month', 'Post Weekday', 'Post Hour', 'Paid', 'Lifetime Post Total Reach', 'Lifetime Post Total Impressions', 'Lifetime Engaged Users', 'Lifetime Post Consumers', 'Lifetime Post Consumptions', 'Lifetime Post Impressions by people who have liked your Page', 'Lifetime Post reach by people who like your Page', 'Lifetime People who have liked your Page and engaged with your post', 'comment', 'like', 'share', 'Total Interactions']],
+                ['australian.dat', ['a1', 'b2', 'c3', 'd4', 'e5', 'f6', 'g7', 'h8', 'i9', 'j10', 'k11', 'l2', 'm13', 'm14', 'class']]]
