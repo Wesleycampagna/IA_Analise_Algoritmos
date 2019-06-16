@@ -80,3 +80,8 @@ def one_hot_encoder(dataset, collumns):
     return np.array(dataset)
 
 ##label_encoder()
+
+
+def norm(dataset):
+    feature_scaler = preprocessing.StandardScaler()
+    return feature_scaler.fit_transform(dataset)

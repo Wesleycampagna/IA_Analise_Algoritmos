@@ -42,15 +42,17 @@ class load_dataset:
         self.split_dataset()
         
 
-    def prepocess_dataset(self):
+    def prepocess_dataset(self, onehot=True, normalize=True):
         for i in range(len(self.datasets)):
             self.x[i], collumns = pre_pcs.label_encoder(self.x[i])
-            self.x[i] = self.prepocess_one_dataset(self.x[i], collumns)
+            if normalize:
+                self.x[i] = self.normalize(self.x[i])
+            if onehot:
+                self.x[i] = self.prepocess_one_dataset(self.x[i], collumns)           
 
 
-    def normalize(self):
-        #TODO: normaliza os datasets
-        pass
+    def normalize(self, dataset):
+        return pre_pcs.norm(dataset)
 
     def prepocess_one_dataset(self, dataset, collumns):
         dataset = pre_pcs.one_hot_encoder(dataset, collumns)        

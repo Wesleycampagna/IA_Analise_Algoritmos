@@ -44,11 +44,8 @@ class Main:
 
         # pre processamento 
         print('\npreprocessando os dados...')
-        self.lds.prepocess_dataset()  
+        self.lds.prepocess_dataset(onehot=True, normalize=True)  
         print('pre-processamento realizado!')
-
-        # normalização dos dados
-        #self.lds.normalize()      
 
         # obtem todos os arquivos
         self.datas_x = self.lds.get_datasets_x()
@@ -95,6 +92,7 @@ DECISION_THEE = 2
 NAIVE_BAYES = 3
 LOGISTIC_REGRESSION = 4
 NEURAL_NETWORK = 5
+RUN_GS_RNEURAIS = False    # Como GridSearch demora pakas - False não o faz
 
 trab = Main()
 
@@ -138,14 +136,18 @@ all_y = trab.get_all_y()
 # para cada dataset deve-se rodar ao menos 5 combinações de cada algoritmo
 for i_dsets in range(len(all_x)):
    
-    # run todos algortmos
-    for algorithm in range(NUM_ALGRITHM):
+    shape_x = np.array(all_x[i_dsets])
+    shape_y = np.array(all_y[i_dsets])
 
-        # rodar KNN 5x
+    print('shape_x: ', shape_x.shape, ' shape_y: ', shape_y.shape)
+    # run todos algortmos
+    for algorithm in range(NUM_ALGRITHM - 2):
+
         if algorithm is KNN:
 
             print('[KNN] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
+            # salva 4 instancias para teste (parametros diferenciados) -> A 5a vem do GridSearchCV 
             knn = [ KNeighborsClassifier(n_neighbors=5, weights='distance', 
             p=2, metric='chebyshev', metric_params=None),
 
@@ -162,19 +164,21 @@ for i_dsets in range(len(all_x)):
                 'n_neighbors':(3,5, 7, 9, 11),
                 'weights': ('uniform', 'distance')}
 
+            # recebe os melhores parametros para o que foi pedido em param_grid
             best_params = trab.get_best_params_grid_search(KNeighborsClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
 
-            # consegui rodar com os parametros do gridSearch uhuuuu!!
+            # executa o estimador conforme os parametros de best_params
             knn_by_gs = KNeighborsClassifier(metric=best_params[0]['metric'], n_neighbors=best_params[0]['n_neighbors'], 
             weights=best_params[0]['weights'])
 
+            # append este 5o elemento para se realizar o cross_validation
             knn.append(knn_by_gs)
 
+            # realiza o cross_validation para cada instancia 
             get_answers(knn, all_x[i_dsets], all_y[i_dsets])
             
             print('-------------------------------------------------------')
 
-        # rodar arvore de decisão 5x
         if algorithm is DECISION_THEE:
             
             print('[TREE] - ', trab.get_name_dataset()[i_dsets][0], '\n')
@@ -216,7 +220,6 @@ for i_dsets in range(len(all_x)):
 
             print('-------------------------------------------------------')
 
-        # rodar naive_bayes 5x
         if algorithm is NAIVE_BAYES:
 
             print('[NBAYES] - ', trab.get_name_dataset()[i_dsets][0], '\n')
@@ -238,8 +241,6 @@ for i_dsets in range(len(all_x)):
 
             print('-------------------------------------------------------')
 
-
-        # rodar regressão logistica 5x   --  obs: não converge no dataset 7 e 11 dá diversos warning de convergencia também (porem executa ao fim) 
         if algorithm is LOGISTIC_REGRESSION and i_dsets is not 6 and i_dsets is not 10:
 
             print('[LREGRESSION] - ', trab.get_name_dataset()[i_dsets][0], '\n')
@@ -261,7 +262,6 @@ for i_dsets in range(len(all_x)):
 
             best_params = trab.get_best_params_grid_search(LogisticRegression(), param_grid, all_x[i_dsets], all_y[i_dsets])
 
-            # consegui rodar com os parametros do gridSearch uhuuuu!!
             lr_bt_gs = LogisticRegression(class_weight=best_params[0]['class_weight'], solver=best_params[0]['solver'], max_iter=best_params[0]['max_iter'], 
             warm_start=best_params[0]['warm_start'], tol=0.01, multi_class=best_params[0]['multi_class'], n_jobs=best_params[0]['n_jobs'])
 
@@ -271,7 +271,6 @@ for i_dsets in range(len(all_x)):
 
             print('-------------------------------------------------------')
 
-        # rodar redes neurais 5x
         if algorithm is NEURAL_NETWORK:
 
             print('[RNEURAIS] - ', trab.get_name_dataset()[i_dsets][0], '\n')
@@ -286,24 +285,24 @@ for i_dsets in range(len(all_x)):
             learning_rate_init=0.005, max_iter=6000, tol=0.0001, n_iter_no_change=15),
 
             MLPClassifier(hidden_layer_sizes=(50), activation='identity', solver='lbfgs', alpha=0.0008, 
-            learning_rate_init=0.001, max_iter=10000, tol=0.0001, n_iter_no_change=3),
-            
-            MLPClassifier(hidden_layer_sizes=(50), activation='identity', solver='adam', alpha=0.0001, 
-            learning_rate_init=0.01, max_iter=14000, tol=0.001, n_iter_no_change=20)]
+            learning_rate_init=0.001, max_iter=10000, tol=0.0001, n_iter_no_change=3)]
 
             param_grid = {'hidden_layer_sizes':((5,), (10,)), 'activation':('relu', 'identity'), 
             'alpha':(0.008, 0.0005), 'solver': ('lbfgs', 'sgd'),
             'learning_rate_init':(0.8, 0.5), 'max_iter':(5000, 8000),
             'n_iter_no_change':(10, 15)}
 
-            """ comentei aqui por que demora bastante o GridSearch """
-            #best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            if RUN_GS_RNEURAIS:
+                best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
 
-            # consegui rodar com os parametros do gridSearch uhuuuu!!
-            #nn_by_gs = MLPClassifier(hidden_layer_sizes=best_params[0]['hidden_layer_sizes'], activation=best_params[0]['activation'], 
-            #solver=best_params[0]['solver'], alpha=best_params[0]['alpha'], max_iter=best_params[0]['max_iter'], n_iter_no_change=best_params[0]['n_iter_no_change'])
+                nn_by_gs = MLPClassifier(hidden_layer_sizes=best_params[0]['hidden_layer_sizes'], activation=best_params[0]['activation'], 
+                solver=best_params[0]['solver'], alpha=best_params[0]['alpha'], max_iter=best_params[0]['max_iter'], n_iter_no_change=best_params[0]['n_iter_no_change'])
 
-            #r_neurais_clas.append(nn_by_gs)
+                r_neurais_clas.append(nn_by_gs)
+
+            else:
+                r_neurais_clas.append(MLPClassifier(hidden_layer_sizes=(50), activation='identity', solver='adam', alpha=0.0001, 
+                learning_rate_init=0.01, max_iter=14000, tol=0.001, n_iter_no_change=20))
 
             get_answers(r_neurais_clas, all_x[i_dsets], all_y[i_dsets])
 
