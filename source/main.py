@@ -30,6 +30,7 @@ class Main:
                 ['breast-cancer-wisconsin.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'class']],
                 ['hayes-roth.data', ['a', 'b', 'c', 'd', 'e', 'class']],
                 ['mammographic_masses.data', ['a', 'b', 'c', 'd', 'e', 'class']],
+                ['australian.dat', ['a1', 'b2', 'c3', 'd4', 'e5', 'f6', 'g7', 'h8', 'i9', 'j10', 'k11', 'l2', 'm13', 'm14', 'class']],
                 ['Wholesale customers data.csv', ['class','Region','Fresh','Milk','Grocery','Frozen','Detergents_Paper','Delicassen']]]
     
     def __init__(self):
@@ -78,6 +79,10 @@ class Main:
 
     def get_accuracy(y_test, y_predict):
         return accuracy_score(y_test, y_predict)   
+
+
+    def get_name_dataset(self):
+        return Main.datasets
     
 #-----------------------------------------------------------------------------
 NUM_ALGRITHM = 5
@@ -92,9 +97,6 @@ trab = Main()
 all_x = trab.get_all_x()
 all_y = trab.get_all_y()
 
-#print (all_y)
-
-#TODO: Escreve aqui qualquer coia a mais necessaria  - deixei todos os parametros das libs
 
 # para cada dataset deve-se rodar ao menos 5 combinações de cada algoritmo
 for i_dsets in range(len(all_x)):
@@ -104,6 +106,8 @@ for i_dsets in range(len(all_x)):
 
         # rodar KNN 5x
         if algorithm is KNN:
+
+            print('[KNN] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
             knn = [ KNeighborsClassifier(n_neighbors=5, weights='distance', 
             p=2, metric='chebyshev', metric_params=None),
@@ -141,100 +145,111 @@ for i_dsets in range(len(all_x)):
         # rodar arvore de decisão 5x
         if algorithm is DECISION_THEE:
             
+            print('[TREE] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
-                tree = [ DecisionTreeClassifier(criterion='entropy', splitter='random', max_depth=None, 
-                min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
-                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
-                min_impurity_split=None, class_weight=None, presort=False),
+            tree = [ DecisionTreeClassifier(criterion='entropy', splitter='random', max_depth=None, 
+            min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
+            max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
+            min_impurity_split=None, class_weight=None, presort=False),
 
-                DecisionTreeClassifier(criterion='gini', splitter='best', max_depth=10, 
-                min_samples_split=5, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
-                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
-                min_impurity_split=None, class_weight=None, presort=False),
+            DecisionTreeClassifier(criterion='gini', splitter='best', max_depth=10, 
+            min_samples_split=5, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
+            max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
+            min_impurity_split=None, class_weight=None, presort=False),
 
-                DecisionTreeClassifier(criterion='gini', splitter='random', max_depth=7, 
-                min_samples_split=3, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
-                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
-                min_impurity_split=None, class_weight=None, presort=True),
+            DecisionTreeClassifier(criterion='gini', splitter='random', max_depth=7, 
+            min_samples_split=3, min_samples_leaf=1, min_weight_fraction_leaf=0.0, 
+            max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, 
+            min_impurity_split=None, class_weight=None, presort=True),
 
-                DecisionTreeClassifier(criterion='entropy', splitter='best', max_depth=None, 
-                min_samples_split=4, min_samples_leaf=2, min_weight_fraction_leaf=0.0, 
-                max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.1, 
-                min_impurity_split=None, class_weight=None, presort=False) ]
+            DecisionTreeClassifier(criterion='entropy', splitter='best', max_depth=None, 
+            min_samples_split=4, min_samples_leaf=2, min_weight_fraction_leaf=0.0, 
+            max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.1, 
+            min_impurity_split=None, class_weight=None, presort=False) ]
 
-                
+            param_grid = {'criterion':('gini', 'entropy'), 
+            'splitter':('best', 'random'),
+            'min_samples_split': (2, 3, 5, 7, 10),
+            'max_depth': (1, 2, 3, 5, 7, 10),
+            'presort':('auto', True, False)}
 
-                param_grid = {'criterion':('gini', 'entropy'), 
-                'splitter':('best', 'random'),
-                'min_samples_split': (2, 3, 5, 7, 10),
-                'max_depth': (1, 2, 3, 5, 7, 10),
-                'presort':('auto', True, False)}
+            best_params = trab.get_best_params_grid_search(DecisionTreeClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
 
-                best_params = trab.get_best_params_grid_search(DecisionTreeClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            dtc_by_gs = DecisionTreeClassifier(criterion=best_params[0]['criterion'], splitter=best_params[0]['splitter'], 
+            min_samples_split=best_params[0]['min_samples_split'], max_depth=best_params[0]['max_depth'], presort=best_params[0]['presort'])
 
-                dtc_by_gs = DecisionTreeClassifier(criterion=best_params[0]['criterion'], splitter=best_params[0]['splitter'], 
-                min_samples_split=best_params[0]['min_samples_split'], max_depth=best_params[0]['max_depth'], presort=best_params[0]['presort'])
+            tree.append(dtc_by_gs)
 
-                tree.append(dtc_by_gs)
+            for trees in tree:
+                placar = cross_val_score(trees, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
+                media = placar.mean()
+                variancia = np.std(placar)
+                print("tree media eh ", media , " " , "variancia eh ",  variancia)
 
-                for trees in tree:
-                    placar = cross_val_score(trees, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                    media = placar.mean()
-                    variancia = np.std(placar)
-                    print("tree media eh ", media , " " , "variancia eh ",  variancia)
-
-
-                print('-------------------------------------------------------')
-
+            print('-------------------------------------------------------')
 
         # rodar naive_bayes 5x
         if algorithm is NAIVE_BAYES:
+
+            print('[NBAYES] - ', trab.get_name_dataset()[i_dsets][0], '\n')
                 
-                gnb = [GaussianNB(priors=None, var_smoothing=1e-09),
+            gnb = [GaussianNB(priors=None, var_smoothing=1e-09),
+            GaussianNB(priors=None, var_smoothing=1e-08),
+            GaussianNB(priors=None, var_smoothing=1e-07),
+            GaussianNB(priors=None, var_smoothing=1e-10)]
 
-                GaussianNB(priors=None, var_smoothing=1e-08),
+            param_grid = {'var_smoothing':(1e-09, 1e-08, 1e-07)}
 
-                GaussianNB(priors=None, var_smoothing=1e-07),
+            best_params = trab.get_best_params_grid_search(GaussianNB(), param_grid, all_x[i_dsets], all_y[i_dsets])
 
-                GaussianNB(priors=None, var_smoothing=1e-10)]
+            gnb_by_gs = GaussianNB(var_smoothing=best_params[0]['var_smoothing'])
 
-                param_grid = {'var_smoothing':(1e-09, 1e-08, 1e-07)}
+            gnb.append(gnb_by_gs)
 
-                best_params = trab.get_best_params_grid_search(GaussianNB(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            for gnbs in gnb:
+                placar = cross_val_score(gnbs, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
+                media = placar.mean()
+                variancia = np.std(placar)
+                print(" GNB media eh ", media , " " , "variancia do GNB eh ",  variancia)
 
-                gnb_by_gs = GaussianNB(var_smoothing=best_params[0]['var_smoothing'])
-
-                gnb.append(gnb_by_gs)
-
-                for gnbs in gnb:
-                    placar = cross_val_score(gnbs, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
-                    media = placar.mean()
-                    variancia = np.std(placar)
-                    print(" GNB media eh ", media , " " , "variancia do GNB eh ",  variancia)
-
-                print('-------------------------------------------------------')
-
+            print('-------------------------------------------------------')
 
 
         # rodar regressão logistica 5x
         if algorithm is LOGISTIC_REGRESSION:
 
-            for i in range(5):
+            print('[LREGRESSION] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
-                log_regression = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True, intercept_scaling=1, 
-                class_weight=None, random_state=None, solver='warn', max_iter=100, multi_class='warn', verbose=0, warm_start=False, n_jobs=None)
-                #TODO completar
-            pass
+            log_regression = LogisticRegression(penalty='l2', dual=False, tol=0.0001, C=1.0, fit_intercept=True, intercept_scaling=1, 
+            class_weight=None, random_state=None, solver='warn', max_iter=100, multi_class='warn', verbose=0, warm_start=False, n_jobs=None)
+            #TODO completar
 
         # rodar redes neurais 5x
         if algorithm is NEURAL_NETWORK:
 
-            for i in range(5):
+            print('[RNEURAIS] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
-                r_neurais_clas = MLPClassifier(hidden_layer_sizes=(100), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', 
-                learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, 
-                verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, 
-                beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10)
+            """ r_neurais_clas = MLPClassifier(hidden_layer_sizes=(4), activation='relu', solver='adam', alpha=0.0001, batch_size='auto', 
+            learning_rate='constant', learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, random_state=None, tol=0.0001, 
+            verbose=False, warm_start=False, momentum=0.9, nesterovs_momentum=True, early_stopping=False, validation_fraction=0.1, 
+            beta_1=0.9, beta_2=0.999, epsilon=1e-08, n_iter_no_change=10)
 
-                #TODO completar
-            pass
+            param_grid = {'hidden_layer_sizes':(2, 3, 4, 5, 6), 'activation':('relu'),
+            'n_neighbors':(3,5, 7, 9, 11),
+            'weights': ('uniform', 'distance')}
+
+            best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+
+            # consegui rodar com os parametros do gridSearch uhuuuu!!
+            nn_by_gs = MLPClassifier(a=best_params[0][''])
+
+            r_neurais_clas.append(nn_by_gs)
+
+            for r_meurais in r_neurais_clas:
+                placar = cross_val_score(r_meurais, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
+                media = placar.mean()
+                variancia = np.std(placar)
+                # jogar isto depois em algo
+                print(" media eh ", media , " " , "variancia eh ",  variancia) """
+
+            print('-------------------------------------------------------')
