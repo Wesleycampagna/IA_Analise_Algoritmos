@@ -4,23 +4,22 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import MaxNLocator
 from collections import namedtuple
 
-x = [[0.8348672512483253, 0.8508104981122886, 0.8492351723298015, 0.8449500669833151, 0.8593606138107417], [0.8017817561807332, 0.7928126902935086, 0.8319047619047619, 0.855180246011448, 0.8449488491048592], [0.8933145407564013, 0.911498708010336, 0.920589617101245, 0.8955320648343903, 0.920589617101245], [0.8684038054968287, 0.8659772140004698, 0.8840650692976274, 0.9136128729151984, 0.9182616866337796]]
-
+x = [[0.7814814814814814, 0.8259259259259257, 0.8185185185185185, 0.7851851851851851, 0.837037037037037], [0.7629629629629628, 0.7703703703703704, 0.7888888888888889, 0.7481481481481481, 0.8296296296296296], [0.8333333333333333, 0.8333333333333333, 0.8333333333333333, 0.8333333333333333, 0.8333333333333333], [0.5868498168498169, 0.5925641025641026, 0.587948717948718, 0.612014652014652, 0.6437362637362638], [0.5653479853479854, 0.5545421245421245, 0.6242857142857143, 0.5386813186813187, 0.5776556776556776], [0.5647985347985347, 0.5647985347985347, 0.5647985347985347, 0.5647985347985347, 0.5647985347985347]]
 x = np.array(x)
 print(x.shape)
 
 tam_dataset = 2
-tam_alg = 2
+tam_alg = 3
 
-x.shape = (tam_dataset, tam_alg, len(x[0]))
+x.shape = (tam_alg, tam_dataset, len(x[0]))
 
 print(x.shape)
 
 print(x)
 
 
-fig, ax1 = plt.subplots(figsize=(9, 7))
-ax1.set_xlim(-1, len(x[0]))
+fig, ax1 = plt.subplots(figsize=(7, 4))
+ax1.set_xlim(-1, tam_alg)
 ax1.set_ylim([0, 1])
 
 #ax1.
@@ -32,25 +31,28 @@ ar = []
 
 
 for i in x:
-    print(i) 
-    for k in range(len(i)):
-        print('****')
-        print(i[k].mean()) 
-        ar.append(i[k].mean())
-
-        print('****')
-
-    ar.append
+    x = []
+    for k in i:
+        x.append(k.mean())
+        
+    print('x: ', x)
+    ar.append(x)
     
 
-print(ar)
+print('ar: ', ar)
 
-# ax1.plot('date', 'adj_close', data=ar)
+ar = np.array(ar)
 
+for i in ar:
+    ax1.plot(np.arange(tam_alg), ar, 'o-')
 
-
-plt.xticks(np.arange(0, len(x[0])), ('knn', 'tree', 'nbayes', 'lregression', 'rneurais'))
-
+data = 'mean of accuracy'
+plt.title(data)
+plt.xlabel('algoritmos')
+plt.ylabel('y')
+plt.legend()
+plt.xticks(np.arange(0, tam_alg), ('knn', 'tree', 'nbayes', 'lregression', 'rneurais'))
+plt.savefig('output-files/'+ data + '.png')
 plt.show()
 
 

@@ -66,6 +66,7 @@ class load_dataset:
 
             self.x.append(feat[features].values)
             self.y.append(feat['class'].values)
+            
         
 
     def get_datasets(self, i=None):

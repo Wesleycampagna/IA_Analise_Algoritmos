@@ -99,20 +99,83 @@ RUN_GS_RNEURAIS = True   # Como GridSearch demora pakas - False não o faz
 
 trab = Main()
 
-
 all_means = []
 all_vars = []
 all_times = []
-all_really_means = []
-all_really_vars = []
-all_really_times = []
+
+all_x = trab.get_all_x()
+all_y = trab.get_all_y()
 
 def create_folder():
-    if not os.path.exists('output-files'):
-        os.makedirs('output-files')
+    if not os.path.exists('../data_files'):
+        os.makedirs('../data_files')
 
-def plot_mean_var():
-    pass
+
+def plot_mean():
+    plot('mean of accuracy')
+
+
+def plot_var():
+    plot('mean of variance')
+
+
+def plot_time():
+    plot('mean of time to predict 10kFold')
+
+
+def plot_mean_gs():
+    plot('all means - just GridSearch')
+
+
+def plot(data):
+
+    that = False
+    x = []
+
+    if data == 'mean of accuracy':
+        x = np.array(all_means)
+    if data == 'mean of variance':
+        x = np.array(all_vars)
+    if data == 'mean of time to predict 10kFold':
+        x = np.array(all_times)
+    if data == 'all means - just GridSearch':
+        x = np.array(all_means)
+        that = True
+
+    tam_dataset = len(trab.get_name_dataset())
+    #tam_dataset = 2
+    tam_alg = NUM_ALGRITHM - 1
+    ar = []
+
+    x.shape = (tam_alg, tam_dataset, len(x[0]))
+
+    fig, ax1 = plt.subplots(figsize=(7, 4))
+    ax1.set_xlim(-1, tam_alg)
+    ax1.set_ylim([0, 1])
+    
+    for i in x:
+        x = []
+        for k in i:
+            if that: x.append(k[-1])  # deixei 5 bruto
+            else: x.append(k.mean())  
+
+        ar.append(x)
+
+    print('ar: ', ar)
+    ar = np.array(ar)
+
+    for i in range(len(ar)):
+        ax1.plot(np.arange(tam_alg), ar[i], '-o', label=trab.get_name_dataset()[i][0])
+
+    plt.title(data)
+    plt.xlabel('algoritmos')
+    plt.ylabel('y')
+    plt.legend()
+    plt.xticks(np.arange(0, tam_alg), ('knn', 'tree', 'nbayes', 'lregression', 'rneurais'))
+    
+    create_folder()
+    plt.savefig('../data_files/'+ data + '.png')
+    plt.show()
 
 
 def get_answers(estimador, x_data, y_data):
@@ -145,18 +208,10 @@ def get_answers(estimador, x_data, y_data):
     all_times.append(time_to_make_cross_val)
 
 
-all_x = trab.get_all_x()
-all_y = trab.get_all_y()
-
 
 # para cada dataset deve-se rodar ao menos 5 combinações de cada algoritmo
 for i_dsets in range(len(all_x)):
-   
-    shape_x = np.array(all_x[i_dsets])
-    shape_y = np.array(all_y[i_dsets])
-
-    #print('shape_x: ', shape_x.shape, ' shape_y: ', shape_y.shape)
-    # run todos algortmos
+    
     for algorithm in range(NUM_ALGRITHM):
 
         if algorithm is KNN:
@@ -181,7 +236,7 @@ for i_dsets in range(len(all_x)):
                 'weights': ('uniform', 'distance')}
 
             # recebe os melhores parametros para o que foi pedido em param_grid
-            best_params = trab.get_best_params_grid_search(KNeighborsClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            best_params = trab.get_best_params_grid_search(KNeighborsClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets] )
 
             # executa o estimador conforme os parametros de best_params
             knn_by_gs = KNeighborsClassifier(metric=best_params[0]['metric'], n_neighbors=best_params[0]['n_neighbors'], 
@@ -225,7 +280,7 @@ for i_dsets in range(len(all_x)):
             'max_depth': (1, 2, 3, 5, 7, 10),
             'presort':('auto', True, False)}
 
-            best_params = trab.get_best_params_grid_search(DecisionTreeClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            best_params = trab.get_best_params_grid_search(DecisionTreeClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets] )
 
             dtc_by_gs = DecisionTreeClassifier(criterion=best_params[0]['criterion'], splitter=best_params[0]['splitter'], 
             min_samples_split=best_params[0]['min_samples_split'], max_depth=best_params[0]['max_depth'], presort=best_params[0]['presort'])
@@ -247,7 +302,7 @@ for i_dsets in range(len(all_x)):
 
             param_grid = {'var_smoothing':(1e-09, 1e-08, 1e-07)}
 
-            best_params = trab.get_best_params_grid_search(GaussianNB(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            best_params = trab.get_best_params_grid_search(GaussianNB(), param_grid, all_x[i_dsets], all_y[i_dsets] )
 
             gnb_by_gs = GaussianNB(var_smoothing=best_params[0]['var_smoothing'])
 
@@ -276,7 +331,7 @@ for i_dsets in range(len(all_x)):
             param_grid = {'class_weight': ('balanced', None), 'solver':('newton-cg', 'lbfgs'), 
             'max_iter':(45000, 53000), 'warm_start':(False, True), 'multi_class':('ovr', 'auto'), 'n_jobs': (-1, 1)}
 
-            best_params = trab.get_best_params_grid_search(LogisticRegression(), param_grid, all_x[i_dsets], all_y[i_dsets])
+            best_params = trab.get_best_params_grid_search(LogisticRegression(), param_grid, all_x[i_dsets], all_y[i_dsets] )
 
             lr_bt_gs = LogisticRegression(class_weight=best_params[0]['class_weight'], solver=best_params[0]['solver'], max_iter=best_params[0]['max_iter'], 
             warm_start=best_params[0]['warm_start'], tol=0.01, multi_class=best_params[0]['multi_class'], n_jobs=best_params[0]['n_jobs'])
@@ -309,7 +364,7 @@ for i_dsets in range(len(all_x)):
             'n_iter_no_change':(10, 15)}
 
             if RUN_GS_RNEURAIS:
-                best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets])
+                best_params = trab.get_best_params_grid_search(MLPClassifier(), param_grid, all_x[i_dsets], all_y[i_dsets] )
 
                 nn_by_gs = MLPClassifier(hidden_layer_sizes=best_params[0]['hidden_layer_sizes'], activation=best_params[0]['activation'], 
                 solver=best_params[0]['solver'], alpha=best_params[0]['alpha'], max_iter=best_params[0]['max_iter'], n_iter_no_change=best_params[0]['n_iter_no_change'])
@@ -324,6 +379,11 @@ for i_dsets in range(len(all_x)):
 
             print('-------------------------------------------------------')
 
+print(all_means)
+plot_mean()
+plot_var()
+plot_time()
+plot_mean_gs()
 
 # datasets que tenha colunas muito constratantes (valores) como breast-cancer-wisconsin.data
 # knn reglog e rneurais sofrem muita queda da acuracia
