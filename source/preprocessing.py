@@ -83,5 +83,5 @@ def one_hot_encoder(dataset, collumns):
 
 
 def norm(dataset):
-    feature_scaler = preprocessing.StandardScaler()
+    feature_scaler = preprocessing.MinMaxScaler()
     return feature_scaler.fit_transform(dataset)

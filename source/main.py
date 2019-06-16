@@ -92,7 +92,7 @@ DECISION_THEE = 2
 NAIVE_BAYES = 3
 LOGISTIC_REGRESSION = 4
 NEURAL_NETWORK = 5
-RUN_GS_RNEURAIS = False    # Como GridSearch demora pakas - False não o faz
+RUN_GS_RNEURAIS = True   # Como GridSearch demora pakas - False não o faz
 
 trab = Main()
 
@@ -139,9 +139,9 @@ for i_dsets in range(len(all_x)):
     shape_x = np.array(all_x[i_dsets])
     shape_y = np.array(all_y[i_dsets])
 
-    print('shape_x: ', shape_x.shape, ' shape_y: ', shape_y.shape)
+    #print('shape_x: ', shape_x.shape, ' shape_y: ', shape_y.shape)
     # run todos algortmos
-    for algorithm in range(NUM_ALGRITHM - 2):
+    for algorithm in range(NUM_ALGRITHM):
 
         if algorithm is KNN:
 
@@ -241,7 +241,7 @@ for i_dsets in range(len(all_x)):
 
             print('-------------------------------------------------------')
 
-        if algorithm is LOGISTIC_REGRESSION and i_dsets is not 6 and i_dsets is not 10:
+        if algorithm is LOGISTIC_REGRESSION:
 
             print('[LREGRESSION] - ', trab.get_name_dataset()[i_dsets][0], '\n')
 
