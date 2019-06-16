@@ -22,9 +22,15 @@ class Main:
 
     # obrigatorio descrever os names e um ao menos com class
     datasets =  [['heart.dat', ['aa', 'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka', 'la', 'ma', 'class']],
-                #['Z_Alizadeh_sani_dataset.xlsx', 0], ver a classe dele e fazer os nomes
                 ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e', 'f']],
-                ['../testes/nbayesgabriel/breast-cancer.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']]]
+                ['breast-cancer.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'class']],
+                ['iris.data', ['a', 'b', 'c', 'd', 'class']],
+                ['transfusion.data', ['a', 'b', 'c', 'd', 'class']],
+                ['balance-scale.data', ['class', 'a', 'b', 'c', 'd']],
+                ['breast-cancer-wisconsin.data', ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'class']],
+                ['hayes-roth.data', ['a', 'b', 'c', 'd', 'e', 'class']],
+                ['mammographic_masses.data', ['a', 'b', 'c', 'd', 'e', 'class']],
+                ['Wholesale customers data.csv', ['class','Region','Fresh','Milk','Grocery','Frozen','Detergents_Paper','Delicassen']]]
     
     def __init__(self):
 
@@ -128,7 +134,7 @@ for i_dsets in range(len(all_x)):
                 media = placar.mean()
                 variancia = np.std(placar)
                 # jogar isto depois em algo
-                print(" media eh ", media , " " , "variancia eh ",  variancia)
+                print("knn media eh ", media , " " , "variancia eh ",  variancia)
             
             print('-------------------------------------------------------')
 
@@ -175,20 +181,40 @@ for i_dsets in range(len(all_x)):
                     placar = cross_val_score(trees, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
                     media = placar.mean()
                     variancia = np.std(placar)
-                    print(" media eh ", media , " " , "variancia eh ",  variancia)
+                    print("tree media eh ", media , " " , "variancia eh ",  variancia)
 
-                    
+
                 print('-------------------------------------------------------')
 
 
         # rodar naive_bayes 5x
         if algorithm is NAIVE_BAYES:
-
-            for i in range(5):
                 
-                gnb = GaussianNB(priors=None, var_smoothing=1e-09)
-                #TODO completar
-            pass
+                gnb = [GaussianNB(priors=None, var_smoothing=1e-09),
+
+                GaussianNB(priors=None, var_smoothing=1e-08),
+
+                GaussianNB(priors=None, var_smoothing=1e-07),
+
+                GaussianNB(priors=None, var_smoothing=1e-10)]
+
+                param_grid = {'var_smoothing':(1e-09, 1e-08, 1e-07)}
+
+                best_params = trab.get_best_params_grid_search(GaussianNB(), param_grid, all_x[i_dsets], all_y[i_dsets])
+
+                gnb_by_gs = GaussianNB(var_smoothing=best_params[0]['var_smoothing'])
+
+                gnb.append(gnb_by_gs)
+
+                for gnbs in gnb:
+                    placar = cross_val_score(gnbs, X=all_x[i_dsets], y=all_y[i_dsets], cv=trab.get_fold_params())
+                    media = placar.mean()
+                    variancia = np.std(placar)
+                    print(" GNB media eh ", media , " " , "variancia do GNB eh ",  variancia)
+
+                print('-------------------------------------------------------')
+
+
 
         # rodar regressão logistica 5x
         if algorithm is LOGISTIC_REGRESSION:
