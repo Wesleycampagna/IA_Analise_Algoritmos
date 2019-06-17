@@ -379,11 +379,11 @@ for i_dsets in range(len(all_x)):
 
             print('-------------------------------------------------------')
 
-print(all_means)
-plot_mean()
-plot_var()
-plot_time()
-plot_mean_gs()
+#print(all_means)
+#plot_mean()
+#plot_var()
+#plot_time()
+#plot_mean_gs()
 
 # datasets que tenha colunas muito constratantes (valores) como breast-cancer-wisconsin.data
 # knn reglog e rneurais sofrem muita queda da acuracia
