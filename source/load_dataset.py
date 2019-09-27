@@ -1,5 +1,7 @@
 import pandas as pd
 import preprocessing as pre_pcs
+import copy
+import numpy as np
 
 # ------------------------------------------------------------------------------------------
 #    Alunos:    William Felipe Tsubota      - 2017.1904.056-7
@@ -66,7 +68,19 @@ class load_dataset:
 
             self.x.append(feat[features].values)
             self.y.append(feat['class'].values)
+
+        self.set_porc(self.y)
             
+
+    def set_porc(self, y):
+
+        t = copy.deepcopy(y)
+        q = np.array(set(t))
+        self.classes = 'x'
+
+        print(q)
+
+        pass
         
 
     def get_datasets(self, i=None):
@@ -85,3 +99,14 @@ class load_dataset:
 
     def get_datasets_y(self):
         return self.y
+
+    
+    def get__():
+        return self.classes
+
+
+datasets =  [['heart.dat', ['aa', 'ba', 'ca', 'da', 'ea', 'fa', 'ga', 'ha', 'ia', 'ja', 'ka', 'la', 'ma', 'class']],
+                ['SomervilleHappinessSurvey2015.txt', ['class', 'a', 'b', 'c', 'd', 'e', 'f']]]
+
+ld = load_dataset(datasets)
+print(ls.get__())
